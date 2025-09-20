@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DAILY EARNINGS</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #f4f4f4, #e1f5fe);
+    }
+    header {
+      background: #0288d1;
+      color: #fff;
+      padding: 15px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    #menu {
+      width: 220px;
+      background: #01579b;
+      color: white;
+      height: 100vh;
+      padding-top: 20px;
+      position: fixed;
+      left: 0;
+      top: 0;
+    }
+    #menu button {
+      width: 90%;
+      margin: 8px;
+      padding: 12px;
+      border: none;
+      background: #0288d1;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    #menu button:hover {
+      background: #039be5;
+    }
+    #content {
+      margin-left: 240px;
+      padding: 20px;
+      width: 100%;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    input {
+      width: 95%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    .btn {
+      background: #0288d1;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background: #0277bd;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+<header>DAILY EARNINGS</header>
+
+<div id="loginPage" class="card" style="max-width:400px; margin:40px auto;">
+  <h2>Login / Sign Up</h2>
+  <input type="text" id="username" placeholder="Enter Username">
+  <input type="password" id="password" placeholder="Enter Password">
+  <input type="text" id="inviter" placeholder="Enter Inviter Name (Optional)">
+  <button class="btn" onclick="login()">Login / Sign Up</button>
+</div>
+
+<div id="mainApp" class="hidden">
+  <div id="menu">
+    <button onclick="showSection('profile')">Profile</button>
+    <button onclick="showSection('plan')">Plan</button>
+    <button onclick="showSection('deposit')">Deposit</button>
+    <button onclick="showSection('earn')">Earn Money</button>
+    <button onclick="showSection('withdraw')">Withdraw</button>
+    <button onclick="showSection('team')">Team</button>
+    <button onclick="showSection('helpline')">Helpline</button>
+    <button onclick="showSection('admin')">Admin Panel</button>
+    <button onclick="logout()">Logout</button>
+  </div>
+  <div id="content">
+    <div id="profile" class="card">
+      <h2>Profile</h2>
+      <p><b>Username:</b> <span id="displayUser"></span></p>
+      <p><b>Balance:</b> <span id="balance">0</span> PKR</p>
+      <p><b>Plan Status:</b> <span id="planStatus">No Active Plan</span></p>
+      <p><b>Inviter:</b> <span id="inviterName">None</span></p>
+    </div>
+
+    <div id="plan" class="card hidden">
+      <h2>Plan</h2>
+      <p>Deposit 500 PKR and Earn 30 PKR daily for 30 days</p>
+      <button class="btn" onclick="buyPlan()">Buy Plan</button>
+      <p id="planMsg"></p>
+    </div>
+
+    <div id="deposit" class="card hidden">
+      <h2>Deposit</h2>
+      <p>Send money to JazzCash: <b>03228786546</b></p>
+      <input type="number" id="depAmount" placeholder="Enter Amount">
+      <input type="text" id="senderName" placeholder="Sender Name">
+      <input type="text" id="senderPhone" placeholder="Sender Phone">
+      <input type="text" id="tillId" placeholder="TILL ID">
+      <button class="btn" onclick="sendDeposit()">Send Deposit Request</button>
+      <p id="depositMsg"></p>
+    </div>
+
+    <div id="earn" class="card hidden">
+      <h2>Earn Money</h2>
+      <p>Click below YouTube video (Max 4 times per day, +5 PKR each)</p>
+      <a href="https://youtube.com/shorts/W4dMwdPpJuA?si=dg_pxYfj7FsNWY_D" target="_blank">
+        Watch Video
+      </a><br><br>
+      <button class="btn" onclick="earnClick()">Watch Video</button>
+      <p id="earnMsg"></p>
+    </div>
+
+    <div id="withdraw" class="card hidden">
+      <h2>Withdraw</h2>
+      <input type="number" id="withAmount" placeholder="Enter Amount">
+      <input type="text" id="withNumber" placeholder="Your JazzCash Number">
+      <button class="btn" onclick="sendWithdraw()">Send Withdraw Request</button>
+      <p id="withdrawMsg"></p>
+    </div>
+
+    <div id="team" class="card hidden">
+      <h2>Team</h2>
+      <p>Your Referral Link: <b>dailyearnings.com/join?ref=<span id="refUser"></span></b></p>
+      <p>Invited Members:</p>
+      <ul id="inviteList"></ul>
+    </div>
+
+    <div id="helpline" class="card hidden">
+      <h2>Helpline</h2>
+      <p>WhatsApp Channel: 
+        <a href="https://whatsapp.com/channel/0029Vb6Gx7LKWEKrxZVXWK0o" target="_blank">Join Here</a>
+      </p>
+    </div>
+
+    <div id="admin" class="card hidden">
+      <h2>Admin Panel</h2>
+      <input type="email" id="adminEmail" placeholder="Enter Admin Gmail">
+      <input type="password" id="adminPass" placeholder="Enter Admin Password">
+      <button class="btn" onclick="adminLogin()">Login</button>
+      <div id="adminSection" class="hidden">
+        <h3>Pending Requests</h3>
+        <ul id="requests"></ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let currentUser = null;
+let inviterUser = null;
+let balance = 0;
+let earnClicks = 0;
+let requests = [];
+
+// Plan variables
+let activePlan = false;
+let planDays = 0;
+
+// Admin credentials
+const ADMIN_EMAIL = "malik9nft@gmail.com";
+const ADMIN_PASSWORD = "AMIR131P";
+
+function login(){
+  let user = document.getElementById("username").value;
+  let inviter = document.getElementById("inviter").value;
+  if(user === "") { alert("Enter username"); return; }
+  currentUser = user;
+  inviterUser = inviter || "None";
+  document.getElementById("displayUser").innerText = user;
+  document.getElementById("refUser").innerText = user;
+  document.getElementById("inviterName").innerText = inviterUser;
+  document.getElementById("loginPage").classList.add("hidden");
+  document.getElementById("mainApp").classList.remove("hidden");
+}
+
+function logout(){
+  location.reload();
+}
+
+function showSection(id){
+  document.querySelectorAll("#content .card").forEach(el=>el.classList.add("hidden"));
+  document.getElementById(id).classList.remove("hidden");
+}
+
+// Buy Plan
+function buyPlan(){
+  if(activePlan){
+    document.getElementById("planMsg").innerText = "You already have an active plan!";
+    return;
+  }
+  if(balance < 500){
+    document.getElementById("planMsg").innerText = "Insufficient balance. Please deposit at least 500 PKR.";
+    return;
+  }
+  requests.push({type:"plan", user:currentUser, amount:500, inviter:inviterUser});
+  document.getElementById("planMsg").innerText = "Plan purchase request sent to admin.";
+}
+
+// Earn Money clicks (Max 4/day)
+function earnClick(){
+  if(earnClicks >= 4){
+    document.getElementById("earnMsg").innerText = "Daily limit reached!";
+    return;
+  }
+  balance += 5;
+  earnClicks++;
+  document.getElementById("balance").innerText = balance;
+  document.getElementById("earnMsg").innerText = "You earned 5 PKR!";
+}
+
+// Deposit
+function sendDeposit(){
+  let amt = document.getElementById("depAmount").value;
+  let sender = document.getElementById("senderName").value;
+  let phone = document.getElementById("senderPhone").value;
+  let till = document.getElementById("tillId").value;
+  if(amt === "" || sender === "" || phone === "" || till === ""){
+    alert("Fill all fields");
+    return;
+  }
+  requests.push({
+    type:"deposit", 
+    user:currentUser, 
+    amount:amt, 
+    senderName:sender, 
+    senderPhone:phone, 
+    tillId:till, 
+    inviter:inviterUser
+  });
+  document.getElementById("depositMsg").innerText = "Deposit request sent to admin.";
+}
+
+// Withdraw (min 200, max = balance)
+function sendWithdraw(){
+  let amt = parseInt(document.getElementById("withAmount").value);
+  let num = document.getElementById("withNumber").value;
+  if(isNaN(amt) || num === ""){
+    alert("Fill all fields");
+    return;
+  }
+  if(amt < 200){
+    document.getElementById("withdrawMsg").innerText = "Minimum withdraw is 200 PKR.";
+    return;
+  }
+  if(amt > balance){
+    document.getElementById("withdrawMsg").innerText = "You cannot withdraw more than your balance.";
+    return;
+  }
+  requests.push({type:"withdraw", user:currentUser, amount:amt, number:num, inviter:inviterUser});
+  document.getElementById("withdrawMsg").innerText = "Withdraw request sent to admin.";
+}
+
+// Admin login
+function adminLogin(){
+  let email = document.getElementById("adminEmail").value;
+  let pass = document.getElementById("adminPass").value;
+  if(email === ADMIN_EMAIL && pass === ADMIN_PASSWORD){
+    document.getElementById("adminSection").classList.remove("hidden");
+    updateRequests();
+  } else {
+    alert("Wrong Gmail or Password");
+  }
+}
+
+function updateRequests(){
+  let list = document.getElementById("requests");
+  list.innerHTML = "";
+  requests.forEach((r,i)=>{
+    let li = document.createElement("li");
+    if(r.type === "deposit"){
+      li.innerHTML = r.user+" (Inviter: "+r.inviter+") requested "+r.type+" of "+r.amount+
+      " PKR (Sender: "+r.senderName+", Phone: "+r.senderPhone+", TILL: "+r.tillId+") "+
+      "<button onclick='approve("+i+")'>Approve</button>";
+    } else if(r.type === "withdraw"){
+      li.innerHTML = r.user+" (Inviter: "+r.inviter+") requested "+r.type+" of "+r.amount+
+      " PKR (JazzCash: "+r.number+") "+
+      "<button onclick='approve("+i+")'>Approve</button>";
+    } else {
+      li.innerHTML = r.user+" (Inviter: "+r.inviter+") requested "+r.type+" of "+r.amount+
+      " PKR <button onclick='approve("+i+")'>Approve</button>";
+    }
+    list.appendChild(li);
+  });
+}
+
+function approve(i){
+  let r = requests[i];
+  if(r.type === "deposit"){
+    balance += parseInt(r.amount);
+    document.getElementById("balance").innerText = balance;
+  }
+  if(r.type === "withdraw"){
+    balance -= parseInt(r.amount);
+    document.getElementById("balance").innerText = balance;
+  }
+  if(r.type === "plan"){
+    if(balance >= 500){
+      balance -= 500;
+      activePlan = true;
+      planDays = 30;
+      document.getElementById("balance").innerText = balance;
+      document.getElementById("planMsg").innerText = "Plan approved! You will earn 30 PKR daily for 30 days.";
+      document.getElementById("planStatus").innerText = "Active Plan - 30 days remaining";
+    } else {
+      document.getElementById("planMsg").innerText = "Plan cannot be approved. Insufficient balance.";
+    }
+  }
+  requests.splice(i,1);
+  updateRequests();
+}
+
+// Daily income simulation (1 min = 1 day in demo)
+setInterval(()=>{
+  if(activePlan && planDays > 0){
+    balance += 30;
+    planDays--;
+    document.getElementById("balance").innerText = balance;
+    document.getElementById("planStatus").innerText = 
+      planDays > 0 ? "Active Plan - "+planDays+" days remaining" : "Plan Expired";
+    if(planDays === 0) activePlan = false;
+  }
+}, 60000);
+</script>
+</body>
+</html>
